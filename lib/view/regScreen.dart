@@ -11,49 +11,47 @@ class RegScreen extends StatefulWidget {
 }
 
 class _RegScreenState extends State<RegScreen> {
-
-   String _selectedRole= "Athlete";
+  String _selectedRole = "Athlete";
   final NameController = TextEditingController();
   final prenomController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-    bool _registrationSuccessful = false;
-  Future<void> registerUser(String nom, String prenom, String email, String password, String role) async {
-  const apiUrl = 'http://localhost:3000/api/v1/users'; // Make sure to include the protocol (http) in the URL
+  bool _registrationSuccessful = false;
+  Future<void> registerUser(String nom, String prenom, String email,
+      String password, String role) async {
+    const apiUrl =
+        'http://192.168.1.20:3000/api/v1/users'; // Make sure to include the protocol (http) in the URL
 
-  try {
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'nom': nom,
-        'prenom': prenom,
-        'email': email,
-        'password': password,
-        'confirm_password': password,
-        'role': role,
-        'date_inscription': DateTime.now().toIso8601String(),
-      }),
-    );
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'nom': nom,
+          'prenom': prenom,
+          'email': email,
+          'password': password,
+          'confirm_password': password,
+          'role': role,
+          'date_inscription': DateTime.now().toIso8601String(),
+        }),
+      );
 
-   if (response.statusCode == 201) {
+      if (response.statusCode == 201) {
         print('Registration successful');
         _registrationSuccessful = true;
-   
-} else {
-  print('Registration failed. Status code: ${response.statusCode}');
-  print('Error message: ${response.body}');
-  _registrationSuccessful = false;
-  // You can display an error message to the user here.
-}
-
-  } catch (e) {
-    print('Error connecting to the server: $e');
-     _registrationSuccessful = false;
+      } else {
+        print('Registration failed. Status code: ${response.statusCode}');
+        print('Error message: ${response.body}');
+        _registrationSuccessful = false;
+        // You can display an error message to the user here.
+      }
+    } catch (e) {
+      print('Error connecting to the server: $e');
+      _registrationSuccessful = false;
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -180,7 +178,8 @@ class _RegScreenState extends State<RegScreen> {
                       child: DropdownButton<String>(
                         value: _selectedRole,
                         underline: Container(), // Hides the underline
-                        icon: Icon(Icons.arrow_drop_down, color: Color.fromARGB(255, 0, 0, 0)),
+                        icon: Icon(Icons.arrow_drop_down,
+                            color: Color.fromARGB(255, 0, 0, 0)),
                         style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
                         onChanged: (String? value) {
                           if (value != "") {
@@ -205,39 +204,40 @@ class _RegScreenState extends State<RegScreen> {
                         ],
                       ),
                     ),
-                   ElevatedButton(
-  onPressed: () async {
-    String nom = NameController.text;
-    String prenom = prenomController.text;
-    String email = emailController.text;
-    String password = passwordController.text;
-    String confirmPassword = confirmPasswordController.text;
+                    ElevatedButton(
+                      onPressed: () async {
+                        String nom = NameController.text;
+                        String prenom = prenomController.text;
+                        String email = emailController.text;
+                        String password = passwordController.text;
+                        String confirmPassword = confirmPasswordController.text;
 
-    if (password == confirmPassword) {
-      // Passwords match, proceed with registration
-      await registerUser(nom, prenom, email, password, _selectedRole);
+                        if (password == confirmPassword) {
+                          // Passwords match, proceed with registration
+                          await registerUser(
+                              nom, prenom, email, password, _selectedRole);
 
-      // Check if the registration was successful before navigating
-      if (_registrationSuccessful) {
-        print('Registration successful. Navigating to login page.');
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LoginScreen(),
-          ),
-        );
-      } else {
-        // If registration failed, show an error message or handle accordingly
-        print('Registration failed');
-      }
-    } else {
-      // Passwords don't match, show an error message or handle accordingly
-      print('Passwords do not match');
-    }
-  },
-  child: Text('S\'inscrire'),
-),
-
+                          // Check if the registration was successful before navigating
+                          if (_registrationSuccessful) {
+                            print(
+                                'Registration successful. Navigating to login page.');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginScreen(),
+                              ),
+                            );
+                          } else {
+                            // If registration failed, show an error message or handle accordingly
+                            print('Registration failed');
+                          }
+                        } else {
+                          // Passwords don't match, show an error message or handle accordingly
+                          print('Passwords do not match');
+                        }
+                      },
+                      child: Text('S\'inscrire'),
+                    ),
                     SizedBox(height: 80),
                     Align(
                       alignment: Alignment.bottomRight,

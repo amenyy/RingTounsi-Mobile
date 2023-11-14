@@ -1,144 +1,216 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
+import '../model/user.dart';
 import 'firstScreen.dart';
 
 class ProfileScreen extends StatefulWidget {
+  final User user;
+
+  ProfileScreen({required this.user});
+
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  String _firstName = 'John';
-  String _lastName = 'Doe';
-  String _bio = 'A passionate Flutter developer';
-  String _email = 'john.doe@example.com';
-  String _coverPhoto = 'assets/profile.jpg'; // Ajout de la photo de couverture
-  DateTime _birthDate = DateTime(1990, 1, 1);
-  String _level = 'Intermediate';
-  String _address = '123 Main Street, City';
-  String _phoneNumber = '555-1234';
-  String _boxingCategory = 'Middleweight';
+  late String _coverPhoto;
+
+  @override
+  void initState() {
+    super.initState();
+    _coverPhoto = 'assets/profile.jpg';
+  }
+
+  // Function to update user details
+  Future<void> updateUser() async {
+    final Uri apiUrl =
+        Uri.parse('http://192.168.1.20:3000/api/v1/users/id/${widget.user.id}');
+
+    try {
+      final http.Response response = await http.patch(
+        apiUrl,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          //'Authorization': 'Bearer ${widget.user.}',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'nom': widget.user.nom,
+          'prenom': widget.user.prenom,
+          //'bio': widget.user.bio,
+          'email': widget.user.email,
+          /*'birthDate': widget.user.birthDate.toString(),
+          'level': widget.user.level,
+          'address': widget.user.address,
+          'phoneNumber': widget.user.phoneNumber,
+          'boxingCategory': widget.user.boxingCategory,*/
+          // Add other fields as needed
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        // Successful update
+        print('User updated successfully');
+        // You can update local state or show a success message here
+      } else {
+        // Handle the error, show an error message, etc.
+        print('Failed to update user. Status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error updating user: $error');
+      // Handle the error, show an error message, etc.
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Profile'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () {
-              _editProfile(context);
+        bottomNavigationBar: Container(
+          width: double.infinity,
+          child: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home, size: 30),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.person, size: 30),
+                  label: 'Profile',
+                  backgroundColor: Colors.black),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.favorite, size: 30),
+                label: 'Favorites',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.fitness_center, size: 30),
+                label: 'Training',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.info, size: 30),
+                label: 'About',
+              ),
+            ],
+            selectedItemColor: Colors.grey,
+            unselectedItemColor: Colors.grey,
+            backgroundColor: Color(0xffB81736),
+            onTap: (int index) {
+              // Utiliser la navigation pour la page Profile
+              if (index == 1) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(user: widget.user),
+                  ),
+                );
+              }
+              if (index == 0) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FirstScreen(user: widget.user),
+                  ),
+                );
+              }
             },
           ),
-        ],
-      ),
-      bottomNavigationBar: Container(
-        width: double.infinity,
-        child: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home, size: 30),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person, size: 30),
-                label: 'Profile',
-                backgroundColor: Colors.black),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.favorite, size: 30),
-              label: 'Favorites',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.fitness_center, size: 30),
-              label: 'Training',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.info, size: 30),
-              label: 'About',
-            ),
-          ],
-          selectedItemColor: Colors.grey,
-          unselectedItemColor: Colors.grey,
-          backgroundColor: Color(0xffB81736),
-          onTap: (int index) {
-            // Utiliser la navigation pour la page Profile
-            if (index == 1) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ProfileScreen()),
-              );
-            }
-            if (index == 0) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => FirstScreen()),
-              );
-            }
-          },
         ),
-      ),
-      body: ListView(
-        padding: EdgeInsets.all(16.0),
-        children: [
-          Stack(
-            alignment: Alignment.bottomCenter,
+        body: Container(
+          height: double.infinity,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xffB81736), Color(0xff281537)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: [0.0, 1.0],
+              tileMode: TileMode.clamp,
+            ),
+          ),
+          child: ListView(
+            padding: EdgeInsets.all(16.0),
             children: [
-              Image.asset(
-                _coverPhoto,
-                height: 200,
-                width: double.infinity,
-                fit: BoxFit.cover,
+              Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 50),
+                    child: Image.asset(
+                      _coverPhoto,
+                      height: 200,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  CircleAvatar(
+                    radius: 70,
+                    backgroundImage: AssetImage('assets/profile.jpg'),
+                  ),
+                ],
               ),
-              CircleAvatar(
-                radius: 70,
-                backgroundImage: AssetImage('assets/profile.jpg'),
+              ElevatedButton(
+                onPressed: () {
+                  _editProfile(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Color.fromARGB(255, 24, 1, 41), // Background color
+                  onPrimary: Color(0xffB81736), // Text color
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.edit,
+                      color: Color(0xffB81736), // Edit icon color
+                    ),
+                    SizedBox(
+                        width: 8), // Adjust the spacing between icon and text
+                    Text('Edit Profile'),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Text(
+                '${widget.user.nom} ${widget.user.prenom}',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Bio: ',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Email: ${widget.user.email}',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Date of Birth: ',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Level: ',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Address:',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Phone Number:',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Boxing Category: ',
+                style: TextStyle(fontSize: 16),
               ),
             ],
           ),
-          SizedBox(height: 20),
-          Text(
-            '$_firstName $_lastName',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 10),
-          Text(
-            'Bio: $_bio',
-            style: TextStyle(fontSize: 16),
-          ),
-          SizedBox(height: 10),
-          Text(
-            'Email: $_email',
-            style: TextStyle(fontSize: 16),
-          ),
-          SizedBox(height: 10),
-          Text(
-            'Date of Birth: ${_birthDate.toLocal()}',
-            style: TextStyle(fontSize: 16),
-          ),
-          SizedBox(height: 10),
-          Text(
-            'Level: $_level',
-            style: TextStyle(fontSize: 16),
-          ),
-          SizedBox(height: 10),
-          Text(
-            'Address: $_address',
-            style: TextStyle(fontSize: 16),
-          ),
-          SizedBox(height: 10),
-          Text(
-            'Phone Number: $_phoneNumber',
-            style: TextStyle(fontSize: 16),
-          ),
-          SizedBox(height: 10),
-          Text(
-            'Boxing Category: $_boxingCategory',
-            style: TextStyle(fontSize: 16),
-          ),
-        ],
-      ),
-    );
+        ));
   }
 
   void _editProfile(BuildContext context) {
@@ -152,83 +224,92 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 TextFormField(
                   decoration: InputDecoration(labelText: 'First Name'),
-                  initialValue: _firstName,
+                  initialValue: widget.user.nom,
                   onChanged: (value) {
+                    // Update the user object with the new value
                     setState(() {
-                      _firstName = value;
+                      widget.user.nom = value;
                     });
                   },
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Last Name'),
-                  initialValue: _lastName,
+                  initialValue: widget.user.prenom,
                   onChanged: (value) {
+                    // Update the user object with the new value
                     setState(() {
-                      _lastName = value;
+                      widget.user.prenom = value;
                     });
                   },
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Bio'),
-                  initialValue: _bio,
+                  // initialValue: widget.user.bio,
                   onChanged: (value) {
+                    // Update the user object with the new value
                     setState(() {
-                      _bio = value;
+                      // widget.user.bio = value;
                     });
                   },
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Email'),
-                  initialValue: _email,
+                  initialValue: widget.user.email,
                   onChanged: (value) {
+                    // Update the user object with the new value
                     setState(() {
-                      _email = value;
+                      widget.user.email = value;
                     });
                   },
                 ),
                 // Ajout de nouveaux champs
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Date of Birth'),
-                  initialValue: _birthDate.toLocal().toString().split(' ')[0],
+                  // initialValue: widget.user.birthDate.toLocal().toString().split(' ')[0],
                   onChanged: (value) {
+                    // Update the user object with the new value
                     setState(() {
-                      _birthDate = DateTime.parse(value);
+                      // widget.user.birthDate = DateTime.parse(value);
                     });
                   },
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Level'),
-                  initialValue: _level,
+                  // initialValue: widget.user.level,
                   onChanged: (value) {
+                    // Update the user object with the new value
                     setState(() {
-                      _level = value;
+                      // widget.user.level = value;
                     });
                   },
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Address'),
-                  initialValue: _address,
+                  // initialValue: widget.user.address,
                   onChanged: (value) {
+                    // Update the user object with the new value
                     setState(() {
-                      _address = value;
+                      //widget.user.address = value;
                     });
                   },
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Phone Number'),
-                  initialValue: _phoneNumber,
+                  // initialValue: widget.user.phoneNumber,
                   onChanged: (value) {
+                    // Update the user object with the new value
                     setState(() {
-                      _phoneNumber = value;
+                      //widget.user.phoneNumber = value;
                     });
                   },
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Boxing Category'),
-                  initialValue: _boxingCategory,
+                  // initialValue: widget.user.boxingCategory,
                   onChanged: (value) {
+                    // Update the user object with the new value
                     setState(() {
-                      _boxingCategory = value;
+                      // widget.user.boxingCategory = value;
                     });
                   },
                 ),
@@ -245,6 +326,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             TextButton(
               onPressed: () {
                 // Add logic to save changes to the profile
+                updateUser(); // Call the updateUser function to send the API request
                 Navigator.of(context).pop();
               },
               child: Text('Save'),

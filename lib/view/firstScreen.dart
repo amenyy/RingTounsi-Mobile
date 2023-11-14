@@ -1,35 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:ringtounsi_mobile/view/profile.dart';
-import 'package:ringtounsi_mobile/view/welcomeScreen.dart'; // Import other pages
+import 'package:ringtounsi_mobile/view/welcomeScreen.dart';
+
+import '../model/user.dart'; // Import other pages
 
 class FirstScreen extends StatelessWidget {
+  final User user;
+
+  FirstScreen({required this.user});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(colors: [
-            Color(0xffB81736),
-            Color(0xff281537),
-          ]),
-        ),
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(top: 70.0),
+      body: Stack(
+        children: [
+          Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [
+                Color(0xffB81736),
+                Color(0xff281537),
+              ]),
+            ),
+          ),
+          AnimatedPositioned(
+            duration: Duration(milliseconds: 500),
+            top: 70.0,
+            left: 0.0,
+            right: 0.0,
+            child: Center(
+              child: Text(
+                'Hello ${user.nom} ${user.prenom}',
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 200.0,
+            left: 0.0,
+            right: 0.0,
+            child: Container(
+              height: 100.0,
+              width: double.infinity,
               child: Image(
                 image: AssetImage('assets/gloves.png'),
                 width: 100.0,
                 height: 100.0,
               ),
             ),
-            const SizedBox(height: 20),
-          ],
-        ),
+          ),
+        ],
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(),
+      bottomNavigationBar: CustomBottomNavigationBar(user: user),
     );
   }
 
@@ -37,6 +64,10 @@ class FirstScreen extends StatelessWidget {
 }
 
 class CustomBottomNavigationBar extends StatelessWidget {
+  final User user;
+
+  CustomBottomNavigationBar({required this.user});
+
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
@@ -74,7 +105,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
         } else if (index == 1) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ProfileScreen()),
+            MaterialPageRoute(builder: (context) => ProfileScreen(user: user)),
           );
         }
         // Add similar logic for other pages
@@ -82,5 +113,3 @@ class CustomBottomNavigationBar extends StatelessWidget {
     );
   }
 }
-
-// Define the HomeScreen widget and other pages similarly

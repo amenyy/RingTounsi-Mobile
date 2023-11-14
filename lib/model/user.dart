@@ -26,7 +26,7 @@ class User {
       nom: json['nom'],
       prenom: json['prenom'],
       email: json['email'],
-      password: json['password'],
+      password: json['token'],
       dateInscription: DateTime.parse(json['date_inscription']),
       role: json['role'],
     );
