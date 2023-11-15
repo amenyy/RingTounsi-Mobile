@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:ringtounsi_mobile/view/LevelScreen.dart';
+import 'package:ringtounsi_mobile/view/SearchCoachScreen.dart';
 import '../model/user.dart';
 import 'firstScreen.dart';
 
@@ -108,6 +110,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => FirstScreen(user: widget.user),
+                  ),
+                );
+              }
+              if (index == 3) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LevelScreen(),
+                  ),
+                );
+              }
+              if (index == 3) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchCoachScreen(),
                   ),
                 );
               }

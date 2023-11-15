@@ -39,8 +39,8 @@ class LoginScreen extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-            height: double.infinity,
-            width: double.infinity,
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [Color(0xffB81736), Color(0xff281537)],
@@ -72,8 +72,8 @@ class LoginScreen extends StatelessWidget {
               width: double.infinity,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: ListView(
+                  // Use a ListView for scrollability
                   children: [
                     TextField(
                       controller: emailController,
