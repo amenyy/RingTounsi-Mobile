@@ -27,7 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   // Function to update user details
   Future<void> updateUser() async {
     final Uri apiUrl =
-        Uri.parse('http://192.168.1.17:3000/api/v1/users/id/${widget.user.id}');
+        Uri.parse('http://192.168.1.27:3000/api/v1/users/id/${widget.user.id}');
 
     try {
       final http.Response response = await http.patch(
@@ -39,13 +39,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         body: jsonEncode(<String, dynamic>{
           'nom': widget.user.nom,
           'prenom': widget.user.prenom,
-          //'bio': widget.user.bio,
+          'bio': widget.user.bio,
           'email': widget.user.email,
-          /*'birthDate': widget.user.birthDate.toString(),
-          'level': widget.user.level,
-          'address': widget.user.address,
-          'phoneNumber': widget.user.phoneNumber,
-          'boxingCategory': widget.user.boxingCategory,*/
+          /*'birthDate': widget.user.birthDate.toString(),*/
+          'grade': widget.user.grade,
+          'adresse': widget.user.adresse,
+          'numTel': widget.user.numTel,
+          /* 'boxingCategory': widget.user.boxingCategory,*/
           // Add other fields as needed
         }),
       );
@@ -193,7 +193,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               SizedBox(height: 10),
               Text(
-                'Bio: ',
+                'Bio:${widget.user.bio} ',
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(height: 10),
@@ -208,17 +208,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               SizedBox(height: 10),
               Text(
-                'Level: ',
+                'grade: ${widget.user.grade}',
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(height: 10),
               Text(
-                'Address:',
+                'Adresse:${widget.user.adresse}',
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(height: 10),
               Text(
-                'Phone Number:',
+                'Phone Number:${widget.user.numTel}',
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(height: 10),
@@ -262,11 +262,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Bio'),
-                  // initialValue: widget.user.bio,
+                  initialValue: widget.user.bio,
                   onChanged: (value) {
                     // Update the user object with the new value
                     setState(() {
-                      // widget.user.bio = value;
+                      widget.user.bio = value;
                     });
                   },
                 ),
@@ -292,32 +292,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
                 ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Level'),
-                  // initialValue: widget.user.level,
+                  decoration: InputDecoration(labelText: 'Grade'),
+                  initialValue: widget.user.grade,
                   onChanged: (value) {
                     // Update the user object with the new value
                     setState(() {
-                      // widget.user.level = value;
+                      widget.user.grade = value;
                     });
                   },
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Address'),
-                  // initialValue: widget.user.address,
+                  initialValue: widget.user.adresse,
                   onChanged: (value) {
                     // Update the user object with the new value
                     setState(() {
-                      //widget.user.address = value;
+                      widget.user.adresse = value;
                     });
                   },
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Phone Number'),
-                  // initialValue: widget.user.phoneNumber,
+                  initialValue: widget.user.numTel,
                   onChanged: (value) {
                     // Update the user object with the new value
                     setState(() {
-                      //widget.user.phoneNumber = value;
+                      widget.user.numTel = value;
                     });
                   },
                 ),

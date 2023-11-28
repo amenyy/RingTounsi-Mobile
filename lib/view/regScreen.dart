@@ -201,10 +201,6 @@ class _RegScreenState extends State<RegScreen> {
                               value: "Coach",
                               child: Text('Coach'),
                             ),
-                            DropdownMenuItem<String>(
-                              value: "Admin",
-                              child: Text('Admin'),
-                            ),
                           ],
                         ),
                       ),
