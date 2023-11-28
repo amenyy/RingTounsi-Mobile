@@ -2,9 +2,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:ringtounsi_mobile/view/regScreen.dart';
 import 'package:ringtounsi_mobile/view/firstScreen.dart';
+import 'package:ringtounsi_mobile/view/dashboard_screen.dart';
+import 'package:ringtounsi_mobile/view/CoachScreen';
+import 'package:ringtounsi_mobile/view/PendingScreen.dart';
+import 'package:ringtounsi_mobile/view/DeniedScreen.dart';
+
 import '../viewmodel/login_view_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:ringtounsi_mobile/model/user.dart';
+import '../utils/constants.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -16,7 +22,7 @@ class LoginScreen extends StatelessWidget {
   Future<User?> login(
       BuildContext context, String email, String password) async {
     final response = await http.post(
-      Uri.parse('http://192.168.1.20:3000/api/v1/users/login'),
+      Uri.parse('$apiUrl/api/v1/users/login'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'email': email, 'password': password}),
     );
@@ -129,15 +135,56 @@ class LoginScreen extends StatelessWidget {
                             await login(currentContext, email, password);
 
                         if (user != null) {
-                          // Login successful, navigate to the next screen
-                          print('Navigating to FirstScreen');
-                          Navigator.push(
-                            currentContext,
-                            MaterialPageRoute(
-                              builder: (currentContext) =>
-                                  FirstScreen(user: user),
-                            ),
-                          );
+                          // Login successful
+                          if (user.role == 'Coach') {
+                            // Check status for Coach role
+                            if (user.status == 'approved') {
+                              // Redirect to Coach Screen for approved coaches
+                              Navigator.push(
+                                currentContext,
+                                MaterialPageRoute(
+                                  builder: (currentContext) =>
+                                      CoachScreen(user: user),
+                                ),
+                              );
+                            } else if (user.status == 'pending') {
+                              // Show pending screen for pending approval
+                              Navigator.push(
+                                currentContext,
+                                MaterialPageRoute(
+                                  builder: (currentContext) => PendingScreen(),
+                                ),
+                              );
+                            } else if (user.status == 'denied') {
+                              // Show denied screen for denied access
+                              Navigator.push(
+                                currentContext,
+                                MaterialPageRoute(
+                                  builder: (currentContext) => DeniedScreen(),
+                                ),
+                              );
+                            }
+                          } else if (user.role == 'Admin') {
+                            // Redirect to DashboardScreen for Admin role
+                            Navigator.push(
+                              currentContext,
+                              MaterialPageRoute(
+                                builder: (currentContext) =>
+                                    DashboardScreen(user: user),
+                              ),
+                            );
+                          } else if (user.role == 'Athlete') {
+                            // Redirect to FirstScreen for Athlete role
+                            Navigator.push(
+                              currentContext,
+                              MaterialPageRoute(
+                                builder: (currentContext) =>
+                                    FirstScreen(user: user),
+                              ),
+                            );
+                          } else {
+                            // Handle other roles or scenarios here
+                          }
                         } else {
                           // Login failed, show an error message or handle accordingly
                           print('Login failed');

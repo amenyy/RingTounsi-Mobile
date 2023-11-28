@@ -6,5 +6,5 @@ import 'package:http/http.dart' as http;
 import 'package:ringtounsi_mobile/model/user.dart';
 
 class ApiService {
-  final String baseUrl = 'http://192.168.1.20:3000';
+  final String baseUrl = 'http://192.168.1.17:3000';
 }

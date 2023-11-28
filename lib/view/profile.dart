@@ -27,7 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   // Function to update user details
   Future<void> updateUser() async {
     final Uri apiUrl =
-        Uri.parse('http://192.168.1.20:3000/api/v1/users/id/${widget.user.id}');
+        Uri.parse('http://192.168.1.17:3000/api/v1/users/id/${widget.user.id}');
 
     try {
       final http.Response response = await http.patch(
