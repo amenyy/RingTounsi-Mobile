@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ringtounsi_mobile/model/coach.dart'; // Assuming you have a Coach model
 
 class CoachDetailPage extends StatelessWidget {
+  final Coach coachData;
+
+  CoachDetailPage({required this.coachData});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +29,7 @@ class CoachDetailPage extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: Text('Nom du Coach'),
+              title: Text(coachData.nom),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -32,7 +37,7 @@ class CoachDetailPage extends StatelessWidget {
                   Row(
                     children: [
                       Icon(Icons.star, size: 16, color: Colors.amber),
-                      Text('4.5'), // Note / évaluation du coach
+                      Text('4.5'), // Assuming coachData has a rating property
                     ],
                   ),
                   Text('Adresse du Coach'),
@@ -55,21 +60,20 @@ class CoachDetailPage extends StatelessWidget {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount:
-                    5, // Remplacez par le nombre de commentaires du coach
+                //itemCount: coachData.comments.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text('Nom de l\'utilisateur'),
+                   // title: Text(coachData.comments[index].userName),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.star, size: 16, color: Colors.amber),
-                            Text('4.0'), // Note de l'utilisateur
+                           // Icon(Icons.star, size: 16, color: Colors.amber),
+                            //Text(coachData.comments[index].rating.toString()),
                           ],
                         ),
-                        Text('Un commentaire sur le coach'),
+                        //Text(coachData.comments[index].comment),
                       ],
                     ),
                   );

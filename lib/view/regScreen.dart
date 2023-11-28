@@ -21,7 +21,7 @@ class _RegScreenState extends State<RegScreen> {
 
   Future<void> registerUser(String nom, String prenom, String email,
       String password, String role) async {
-    const apiUrl = 'http://192.168.1.20:3000/api/v1/users';
+    const apiUrl = 'http://192.168.38.65:3000/api/v1/users';
 
     try {
       final response = await http.post(
@@ -200,10 +200,6 @@ class _RegScreenState extends State<RegScreen> {
                             DropdownMenuItem<String>(
                               value: "Coach",
                               child: Text('Coach'),
-                            ),
-                            DropdownMenuItem<String>(
-                              value: "Admin",
-                              child: Text('Admin'),
                             ),
                           ],
                         ),

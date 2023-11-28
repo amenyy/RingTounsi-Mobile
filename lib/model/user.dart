@@ -9,6 +9,11 @@ class User {
 
   late String status;
 
+  var bio;
+  var adresse;
+  var grade;
+  var numTel;
+
   User({
     this.id,
     required this.nom, // Use the 'required' modifier
@@ -18,6 +23,10 @@ class User {
     required this.dateInscription,
     required this.role,
     required this.status,
+    bio,
+    adresse,
+    numTel,
+    grade,
   });
 
   // Factory method, toJson, and fromJson remain the same
@@ -33,6 +42,10 @@ class User {
       dateInscription: DateTime.parse(json['date_inscription']),
       role: json['role'],
       status: json['status'],
+      bio: json["bio"],
+      adresse: json["adresse"],
+      numTel: json["numTel"],
+      grade: json["grade"],
     );
   }
 
@@ -46,6 +59,10 @@ class User {
       'password': password,
       'date_inscription': dateInscription.toIso8601String(),
       'role': role,
+      'bio': bio,
+      'grade': grade,
+      'numTel': numTel,
+      'adresse': adresse,
     };
   }
 }

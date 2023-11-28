@@ -1,11 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:ringtounsi_mobile/view/profile.dart';
-import 'package:ringtounsi_mobile/view/firstScreen.dart';
-import 'package:ringtounsi_mobile/view/LevelScreen.dart';
-import 'package:ringtounsi_mobile/view/SearchCoachScreen.dart';
+import 'package:http/http.dart' as http;
+import 'package:ringtounsi_mobile/model/coach.dart';
+import 'dart:convert';
+
 import 'package:ringtounsi_mobile/view/CoachDetailPage.dart';
 
-class SearchCoachScreen extends StatelessWidget {
+const String apiUrl = 'http://192.168.59.65:3000'; // Remplacez par l'URL réelle de votre API
+
+class SearchCoachScreen extends StatefulWidget {
+  @override
+  _SearchCoachScreenState createState() => _SearchCoachScreenState();
+}
+
+class _SearchCoachScreenState extends State<SearchCoachScreen> {
+  List<Coach> coaches = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Appeler la fonction de récupération des coachs au chargement de l'écran
+    fetchCoaches();
+  }
+
+  Future<void> fetchCoaches() async {
+    try {
+      final response = await http.get(Uri.parse('$apiUrl/api/v1/coaches/'));
+      if (response.statusCode == 200) {
+        final List<dynamic> coachesData = jsonDecode(response.body);
+
+        setState(() {
+          coaches = coachesData.map((data) => Coach.fromJson(data)).toList();
+        });
+      } else {
+        // Handle error cases
+        print('Failed to fetch coaches: ${response.statusCode}');
+      }
+    } catch (error) {
+      // Handle network or server-side errors
+      print('Error fetching coaches: $error');
+    }
+  }
+   /* void _onCoachSelected(Coach coach) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => CoachDetailPage(coachData: coach)),
+                              );
+                            
+                      }
+*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +66,7 @@ class SearchCoachScreen extends StatelessWidget {
               padding: EdgeInsets.all(16.0),
               child: TextField(
                 decoration: InputDecoration(
-                  hintText: 'Chercher un coach par catégorie, nom, adresse...',
+                  hintText: 'Chercher un coach par nom ',
                   fillColor: Colors.white,
                   filled: true,
                   border: OutlineInputBorder(
@@ -34,41 +76,48 @@ class SearchCoachScreen extends StatelessWidget {
                 onChanged: (text) {
                   // Action lors de la saisie dans la barre de recherche
                   // Vous pouvez implémenter la logique de recherche ici
+                  // Par exemple, vous pouvez filtrer la liste des coachs en fonction du texte saisi
+                  if (text.isEmpty) {
+                    // Si le champ de recherche est vide, réinitialisez la liste des coachs
+                    fetchCoaches();
+                  } else {
+                    List<Coach> filteredCoaches = coaches
+                        .where((coach) =>
+                            coach.nom.toLowerCase().contains(text.toLowerCase()))
+                        .toList();
+                    setState(() {
+                      // Mettez à jour la liste des coachs avec le résultat du filtre
+                      coaches = filteredCoaches;
+                    });
+                  }
                 },
               ),
             ),
             Expanded(
               child: ListView.builder(
-                itemCount:
-                    10, // Remplacez 10 par le nombre de coachs à afficher
+                itemCount: coaches.length,
                 itemBuilder: (context, index) {
                   return Card(
                     elevation: 5,
                     margin: EdgeInsets.all(8.0),
                     child: ListTile(
+                      // Utilisez les données du coach à partir de la liste dynamique
                       leading: CircleAvatar(
-                        // Photo du coach (peut être remplacée par une image depuis une URL ou le système de fichiers)
                         backgroundImage: AssetImage('assets/gloves.png'),
                       ),
-                      title: Text('Nom du Coach $index'),
+                      title: Text(coaches[index].nom),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Catégorie de Boxing'),
-                          Row(
-                            children: [
-                              Icon(Icons.star, size: 16, color: Colors.amber),
-                              Text('4.5'), // Note / évaluation du coach
-                            ],
-                          ),
-                          Text('Adresse du Coach $index'),
-                        ],
+                      
                       ),
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CoachDetailPage()),
+                            builder: (context) =>CoachDetailPage(coachData: coaches[index]),
+
+                            )
+                             
                         );
                         // Action à effectuer lors du clic sur un coach
                         // Naviguer vers la page de détails du coach par exemple
@@ -118,3 +167,5 @@ class SearchCoachScreen extends StatelessWidget {
     );
   }
 }
+
+

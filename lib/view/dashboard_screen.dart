@@ -17,37 +17,28 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   List<Coach> coaches = []; // List to store fetched coaches
+
   Color getStatusColor(String status) {
-    switch (status) {
-      case 'pending':
-        return Colors.yellow;
-      case 'approved':
-        return Colors.green;
-      case 'denied':
-        return Colors.red;
-      default:
-        return Colors.white; // Change this to the default color you want
+    if (status == 'approved') {
+      return Colors.green;
+    } else if (status == 'denied') {
+      return Colors.red;
+    } else {
+      return Colors.amber;
     }
   }
 
   Future<void> updateCoachStatus(String coachId, String coachStatus) async {
+    String newStatus = getNextStatus(coachStatus);
     try {
       final response = await http.patch(
         Uri.parse('$apiUrl/api/v1/coaches/id/$coachId'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'status': getNextStatus(coachStatus)}),
+        body: jsonEncode({'status': newStatus}),
       );
-
       if (response.statusCode == 200) {
-        final dynamic updatedCoachData = jsonDecode(response.body);
-        setState(() {
-          coaches = coaches.map((coach) {
-            if (coach.id == coachId) {
-              coach = Coach.fromJson(updatedCoachData);
-            }
-            return coach;
-          }).toList();
-        });
+        await fetchCoaches(); // Fetch updated data
+        setState(() {}); // Trigger a rebuild of the UI
       } else {
         print('Failed to update coach status: ${response.statusCode}');
         // Handle error cases here
@@ -121,20 +112,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     IconThemeData(color: Colors.deepPurple.shade900),
                 destinations: [
                   NavigationRailDestination(
-                    icon: Icon(Icons.home),
-                    label: Text("Home"),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.bar_chart),
-                    label: Text("Rapports"),
+                    icon: Icon(Icons.contacts),
+                    label: Text("Coaches"),
                   ),
                   NavigationRailDestination(
                     icon: Icon(Icons.person),
-                    label: Text("Profile"),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.settings),
-                    label: Text("Settings"),
+                    label: Text("All users"),
                   ),
                 ],
                 selectedIndex: 0),

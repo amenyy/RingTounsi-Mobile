@@ -22,7 +22,7 @@ class LoginScreen extends StatelessWidget {
   Future<User?> login(
       BuildContext context, String email, String password) async {
     final response = await http.post(
-      Uri.parse('http://192.168.1.20:3000/api/v1/users/login'),
+      Uri.parse('http://192.168.59.65:3000/api/v1/users/login'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'email': email, 'password': password}),
     );
