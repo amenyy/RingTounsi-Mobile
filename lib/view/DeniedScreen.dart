@@ -4,9 +4,7 @@ class DeniedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Access Denied'),
-      ),
+      
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

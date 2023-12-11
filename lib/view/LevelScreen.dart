@@ -14,7 +14,7 @@ class LevelScreen extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xffB81736), Color(0xff281537)],
+            colors: [Color(0xffe4f3e3), Color(0xff5ca9e9)],
           ),
         ),
         child: ListView(
@@ -64,37 +64,6 @@ class LevelScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        width: double.infinity,
-        child: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home, size: 30),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person, size: 30),
-              label: 'Profile',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.favorite, size: 30),
-              label: 'Favorites',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.fitness_center, size: 30),
-              label: 'Training',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.sports_martial_arts, size: 30),
-              label: 'About',
-            ),
-          ],
-          selectedItemColor: Colors.grey,
-          unselectedItemColor: Colors.grey,
-          backgroundColor: Color(0xffB81736),
-          onTap: (int index) {},
-        ),
-      ),
     );
   }
 }
@@ -109,7 +78,11 @@ class BoxingDetailsPage extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xffB81736), Color(0xff281537)],
+            colors: [Color(0xffe4f3e3), Color(0xff5ca9e9)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.0, 1.0],
+            tileMode: TileMode.clamp,
           ),
         ),
         child: Column(

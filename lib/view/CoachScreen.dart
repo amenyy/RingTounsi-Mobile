@@ -9,10 +9,13 @@ class CoachScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: Text('Coach Dashboard'),
       ),
+      
       body: Center(
+        
         child: Text('Welcome, Coach ${user.nom}'),
       ),
     );

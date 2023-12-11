@@ -5,6 +5,7 @@ import 'package:ringtounsi_mobile/view/LevelScreen.dart';
 import 'package:ringtounsi_mobile/view/SearchCoachScreen.dart';
 import '../model/user.dart';
 import 'firstScreen.dart';
+import '../utils/constants.dart';
 
 class ProfileScreen extends StatefulWidget {
   final User user;
@@ -26,14 +27,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   // Function to update user details
   Future<void> updateUser() async {
-
-    final Uri apiUrl =Uri.parse('http://192.168.38.65:3000/api/v1/users/id/${widget.user.id}');
-
-
+    Uri Url =
+        Uri.parse('http://192.168.1.22:3000/api/v1/users/id/${widget.user.id}');
 
     try {
       final http.Response response = await http.patch(
-        apiUrl,
+        Url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           //'Authorization': 'Bearer ${widget.user.}',
@@ -69,168 +68,92 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: Container(
-          width: double.infinity,
-          child: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home, size: 30),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.person, size: 30),
-                  label: 'Profile',
-                  backgroundColor: Colors.black),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.favorite, size: 30),
-                label: 'Favorites',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.fitness_center, size: 30),
-                label: 'Training',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.info, size: 30),
-                label: 'About',
-              ),
-            ],
-            selectedItemColor: Colors.grey,
-            unselectedItemColor: Colors.grey,
-            backgroundColor: Color(0xffB81736),
-            onTap: (int index) {
-              // Utiliser la navigation pour la page Profile
-              if (index == 1) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfileScreen(user: widget.user),
-                  ),
-                );
-              }
-              if (index == 0) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => FirstScreen(user: widget.user),
-                  ),
-                );
-              }
-              if (index == 3) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LevelScreen(),
-                  ),
-                );
-              }
-              if (index == 3) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SearchCoachScreen(),
-                  ),
-                );
-              }
-            },
+      body: Container(
+        height: double.infinity,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xffe4f3e3), Color(0xff5ca9e9)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.0, 1.0],
+            tileMode: TileMode.clamp,
           ),
         ),
-        body: Container(
-          height: double.infinity,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xffB81736), Color(0xff281537)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [0.0, 1.0],
-              tileMode: TileMode.clamp,
+        child: ListView(
+          padding: EdgeInsets.all(16.0),
+          children: [
+            Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 50),
+                  child: Image.asset(
+                    _coverPhoto,
+                    height: 200,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                CircleAvatar(
+                  radius: 70,
+                  backgroundImage: AssetImage('assets/profile.jpg'),
+                ),
+              ],
             ),
-          ),
-          child: ListView(
-            padding: EdgeInsets.all(16.0),
-            children: [
-              Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 50),
-                    child: Image.asset(
-                      _coverPhoto,
-                      height: 200,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  CircleAvatar(
-                    radius: 70,
-                    backgroundImage: AssetImage('assets/profile.jpg'),
-                  ),
-                ],
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  _editProfile(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Color.fromARGB(255, 24, 1, 41), // Background color
-                  onPrimary: Color(0xffB81736), // Text color
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.edit,
-                      color: Color(0xffB81736), // Edit icon color
-                    ),
-                    SizedBox(
-                        width: 8), // Adjust the spacing between icon and text
-                    Text('Edit Profile'),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
-              Text(
+            SizedBox(height: 20),
+            Center(
+              child: Text(
                 '${widget.user.nom} ${widget.user.prenom}',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 10),
-              Text(
-                'Bio:${widget.user.bio} ',
-                style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 20),
+            ProfileInfoItem(
+              icon: Icons.bookmark,
+              text: 'Bio: ${widget.user.bio}',
+            ),
+            ProfileInfoItem(
+              icon: Icons.grade,
+              text: 'Grade: ${widget.user.grade}',
+            ),
+            ProfileInfoItem(
+              icon: Icons.email,
+              text: 'Email: ${widget.user.email}',
+            ),
+            ProfileInfoItem(
+              icon: Icons.house,
+              text: 'Adresse: ${widget.user.adresse}',
+            ),
+            ProfileInfoItem(
+              icon: Icons.phone,
+              text: 'Phone: ${widget.user.numTel}',
+            ),
+            // Add more ProfileInfoItems for other details
+            ElevatedButton(
+              onPressed: () {
+                _editProfile(context);
+              },
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xffe4f3e3), // Background color
+                onPrimary: Color(0xff5ca9e9), // Text color
               ),
-              SizedBox(height: 10),
-              Text(
-                'Email: ${widget.user.email}',
-                style: TextStyle(fontSize: 16),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.edit,
+                    color: Color(0xff5ca9e9),
+                  ),
+                  SizedBox(width: 8),
+                  Text('Edit Profile'),
+                ],
               ),
-              SizedBox(height: 10),
-              Text(
-                'Date of Birth: ',
-                style: TextStyle(fontSize: 16),
-              ),
-              SizedBox(height: 10),
-              Text(
-                'grade: ${widget.user.grade}',
-                style: TextStyle(fontSize: 16),
-              ),
-              SizedBox(height: 10),
-              Text(
-                'Adresse:${widget.user.adresse}',
-                style: TextStyle(fontSize: 16),
-              ),
-              SizedBox(height: 10),
-              Text(
-                'Phone Number:${widget.user.numTel}',
-                style: TextStyle(fontSize: 16),
-              ),
-              SizedBox(height: 10),
-              Text(
-                'Boxing Category: ',
-                style: TextStyle(fontSize: 16),
-              ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   void _editProfile(BuildContext context) {
@@ -354,6 +277,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         );
       },
+    );
+  }
+}
+
+class ProfileInfoItem extends StatelessWidget {
+  final IconData icon;
+  final String text;
+
+  const ProfileInfoItem({
+    Key? key,
+    required this.icon,
+    required this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Color.fromARGB(112, 255, 255, 255),
+      elevation: 0,
+      child: ListTile(
+        leading: Icon(icon),
+        title: Text(
+          text,
+          style: TextStyle(fontSize: 16),
+        ),
+      ),
     );
   }
 }

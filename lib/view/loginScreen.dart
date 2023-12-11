@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ringtounsi_mobile/view/regScreen.dart';
 import 'package:ringtounsi_mobile/view/firstScreen.dart';
 import 'package:ringtounsi_mobile/view/dashboard_screen.dart';
-import 'package:ringtounsi_mobile/view/CoachScreen';
+import 'package:ringtounsi_mobile/view/CoachScreen.dart';
 import 'package:ringtounsi_mobile/view/PendingScreen.dart';
 import 'package:ringtounsi_mobile/view/DeniedScreen.dart';
 
@@ -22,7 +22,7 @@ class LoginScreen extends StatelessWidget {
   Future<User?> login(
       BuildContext context, String email, String password) async {
     final response = await http.post(
-      Uri.parse('http://192.168.59.65:3000/api/v1/users/login'),
+      Uri.parse('$apiUrl/api/v1/users/login'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'email': email, 'password': password}),
     );
@@ -47,9 +47,13 @@ class LoginScreen extends StatelessWidget {
           Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xffB81736), Color(0xff281537)],
+                colors: [Color(0xffe4f3e3), Color(0xff5ca9e9)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: [0.0, 1.0],
+                tileMode: TileMode.clamp,
               ),
             ),
             child: Padding(
@@ -91,7 +95,7 @@ class LoginScreen extends StatelessWidget {
                         labelText: 'Gmail',
                         labelStyle: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xffB81736),
+                          color: Color(0xff5ca9e9),
                         ),
                       ),
                     ),
@@ -106,7 +110,7 @@ class LoginScreen extends StatelessWidget {
                         labelText: 'Password',
                         labelStyle: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xffB81736),
+                          color: Color(0xff5ca9e9),
                         ),
                       ),
                     ),
@@ -143,8 +147,9 @@ class LoginScreen extends StatelessWidget {
                               Navigator.push(
                                 currentContext,
                                 MaterialPageRoute(
-                                  builder: (currentContext) =>
-                                      CoachScreen(user: user),
+                                  builder: (currentContext) => CoachScreen(
+                                    user: user,
+                                  ),
                                 ),
                               );
                             } else if (user.status == 'pending') {
@@ -196,7 +201,7 @@ class LoginScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
                           gradient: const LinearGradient(
-                            colors: [Color(0xffB81736), Color(0xff281537)],
+                            colors: [Color(0xffe4f3e3), Color(0xff5ca9e9)],
                           ),
                         ),
                         child: Center(

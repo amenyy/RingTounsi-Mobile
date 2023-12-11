@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:ringtounsi_mobile/view/loginScreen.dart';
 import 'package:http/http.dart' as http;
 
+import '../utils/constants.dart';
+
 class RegScreen extends StatefulWidget {
   const RegScreen({Key? key}) : super(key: key);
 
@@ -21,11 +23,11 @@ class _RegScreenState extends State<RegScreen> {
 
   Future<void> registerUser(String nom, String prenom, String email,
       String password, String role) async {
-    const apiUrl = 'http://192.168.38.65:3000/api/v1/users';
+    const Url = '$apiUrl/api/v1/users';
 
     try {
       final response = await http.post(
-        Uri.parse(apiUrl),
+        Uri.parse(Url),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'nom': nom,
@@ -61,12 +63,13 @@ class _RegScreenState extends State<RegScreen> {
             Container(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    Color(0xffB81736),
-                    Color(0xff281537),
-                  ],
+                  colors: [Color(0xffe4f3e3), Color(0xff5ca9e9)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [0.0, 1.0],
+                  tileMode: TileMode.clamp,
                 ),
               ),
               child: Column(
@@ -112,7 +115,7 @@ class _RegScreenState extends State<RegScreen> {
                           labelText: 'Name',
                           hintStyle: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Color(0xffB81736),
+                            color: Color(0xff5ca9e9),
                           ),
                         ),
                       ),
@@ -126,7 +129,7 @@ class _RegScreenState extends State<RegScreen> {
                           labelText: 'Prenom',
                           hintStyle: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Color(0xffB81736),
+                            color: Color(0xff5ca9e9),
                           ),
                         ),
                       ),
@@ -140,7 +143,7 @@ class _RegScreenState extends State<RegScreen> {
                           labelText: 'Phone or Gmail',
                           hintStyle: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Color(0xffB81736),
+                            color: Color(0xff5ca9e9),
                           ),
                         ),
                       ),
@@ -154,7 +157,7 @@ class _RegScreenState extends State<RegScreen> {
                           labelText: 'Password',
                           hintStyle: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Color(0xffB81736),
+                            color: Color(0xff5ca9e9),
                           ),
                         ),
                       ),
@@ -167,7 +170,7 @@ class _RegScreenState extends State<RegScreen> {
                           labelText: 'Confirm Password',
                           hintStyle: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Color(0xffB81736),
+                            color: Color(0xff5ca9e9),
                           ),
                         ),
                         controller: confirmPasswordController,
@@ -177,7 +180,7 @@ class _RegScreenState extends State<RegScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
-                          color: const Color(0xffB81736),
+                          color: Color(0xff5ca9e9),
                         ),
                         child: DropdownButton<String>(
                           value: _selectedRole,

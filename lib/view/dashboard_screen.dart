@@ -94,7 +94,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xffB81736), Color(0xff281537)],
+            colors: [Color(0xffe4f3e3), Color(0xff5ca9e9)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.0, 1.0],
+            tileMode: TileMode.clamp,
           ),
         ),
         child: Row(

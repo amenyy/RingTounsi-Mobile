@@ -5,7 +5,8 @@ import 'dart:convert';
 
 import 'package:ringtounsi_mobile/view/CoachDetailPage.dart';
 
-const String apiUrl = 'http://192.168.59.65:3000'; // Remplacez par l'URL réelle de votre API
+const String apiUrl =
+    'http://192.168.1.22:3000'; // Remplacez par l'URL réelle de votre API
 
 class SearchCoachScreen extends StatefulWidget {
   @override
@@ -40,7 +41,8 @@ class _SearchCoachScreenState extends State<SearchCoachScreen> {
       print('Error fetching coaches: $error');
     }
   }
-   /* void _onCoachSelected(Coach coach) {
+
+  /* void _onCoachSelected(Coach coach) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) => CoachDetailPage(coachData: coach)),
@@ -57,7 +59,11 @@ class _SearchCoachScreenState extends State<SearchCoachScreen> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xffB81736), Color(0xff281537)],
+            colors: [Color(0xffe4f3e3), Color(0xff5ca9e9)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.0, 1.0],
+            tileMode: TileMode.clamp,
           ),
         ),
         child: Column(
@@ -82,8 +88,9 @@ class _SearchCoachScreenState extends State<SearchCoachScreen> {
                     fetchCoaches();
                   } else {
                     List<Coach> filteredCoaches = coaches
-                        .where((coach) =>
-                            coach.nom.toLowerCase().contains(text.toLowerCase()))
+                        .where((coach) => coach.nom
+                            .toLowerCase()
+                            .contains(text.toLowerCase()))
                         .toList();
                     setState(() {
                       // Mettez à jour la liste des coachs avec le résultat du filtre
@@ -108,17 +115,14 @@ class _SearchCoachScreenState extends State<SearchCoachScreen> {
                       title: Text(coaches[index].nom),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                      
                       ),
                       onTap: () {
                         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>CoachDetailPage(coachData: coaches[index]),
-
-                            )
-                             
-                        );
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  CoachDetailPage(coachData: coaches[index]),
+                            ));
                         // Action à effectuer lors du clic sur un coach
                         // Naviguer vers la page de détails du coach par exemple
                       },
@@ -130,42 +134,6 @@ class _SearchCoachScreenState extends State<SearchCoachScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        width: double.infinity,
-        child: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home, size: 30),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person, size: 30),
-              label: 'Profile',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.favorite, size: 30),
-              label: 'Favorites',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.fitness_center, size: 30),
-              label: 'Training',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.sports_martial_arts, size: 30),
-              label: 'About',
-            ),
-          ],
-          selectedItemColor: Colors.grey,
-          unselectedItemColor: Colors.grey,
-          backgroundColor: Color(0xffB81736),
-          onTap: (int index) {
-            // Actions à effectuer lors de la navigation sur le BottomNavigationBar
-            // Exemple : Navigation vers les différentes pages
-          },
-        ),
-      ),
     );
   }
 }
-
-

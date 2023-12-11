@@ -9,10 +9,10 @@ class User {
 
   late String status;
 
-  var bio;
-  var adresse;
-  var grade;
-  var numTel;
+  late String bio;
+  late String adresse;
+  late String grade;
+  late String numTel;
 
   User({
     this.id,
@@ -23,10 +23,10 @@ class User {
     required this.dateInscription,
     required this.role,
     required this.status,
-    bio,
-    adresse,
-    numTel,
-    grade,
+    required this.bio,
+    required this.adresse,
+    required this.numTel,
+    required this.grade,
   });
 
   // Factory method, toJson, and fromJson remain the same
