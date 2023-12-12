@@ -6,6 +6,7 @@ import 'package:ringtounsi_mobile/view/dashboard_screen.dart';
 import 'package:ringtounsi_mobile/view/CoachScreen.dart';
 import 'package:ringtounsi_mobile/view/PendingScreen.dart';
 import 'package:ringtounsi_mobile/view/DeniedScreen.dart';
+import 'package:ringtounsi_mobile/view/coachView/coachDashboard.dart';
 
 import '../viewmodel/login_view_model.dart';
 import 'package:http/http.dart' as http;
@@ -147,7 +148,7 @@ class LoginScreen extends StatelessWidget {
                               Navigator.push(
                                 currentContext,
                                 MaterialPageRoute(
-                                  builder: (currentContext) => CoachScreen(
+                                  builder: (currentContext) => CoachDashboard(
                                     user: user,
                                   ),
                                 ),

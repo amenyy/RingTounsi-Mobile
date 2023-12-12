@@ -3,20 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:ringtounsi_mobile/view/LevelScreen.dart';
 import 'package:ringtounsi_mobile/view/SearchCoachScreen.dart';
-import '../model/user.dart';
-import 'firstScreen.dart';
-import '../utils/constants.dart';
+import '../../model/user.dart';
+import '../firstScreen.dart';
+import '../../utils/constants.dart';
 
-class ProfileScreen extends StatefulWidget {
+class CoachProfileScreen extends StatefulWidget {
   final User user;
 
-  ProfileScreen({required this.user});
+  CoachProfileScreen({required this.user});
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  _CoachProfileScreenState createState() => _CoachProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _CoachProfileScreenState extends State<CoachProfileScreen> {
   late String _coverPhoto;
 
   @override
@@ -28,7 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   // Function to update user details
   Future<void> updateUser() async {
     Uri Url =
-        Uri.parse('http://192.168.1.16:3000/api/v1/users/id/${widget.user.id}');
+        Uri.parse('http://192.168.1.22:3000/api/v1/users/id/${widget.user.id}');
 
     try {
       final http.Response response = await http.patch(

@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:ringtounsi_mobile/view/CoachDetailPage.dart';
 
 const String apiUrl =
-    'http://192.168.1.22:3000'; // Remplacez par l'URL réelle de votre API
+    'http://192.168.1.16:3000'; // Remplacez par l'URL réelle de votre API
 
 class SearchCoachScreen extends StatefulWidget {
   @override
